@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social App</title>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <!-- loader -->
+    <div
+      id="loader"
+      style="
+        background-color: rgba(128, 128, 128, 0.49);
+        position: fixed;
+        top: 50%;
+        visibility: hidden;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 66666;
+
+        width: 100px;
+        height: 100px;
+        border-radius: 20px;
+      "
+      class="d-flex justify-content-center align-items-center"
+    >
+      <div class="lds-hourglass"></div>
+    </div>
+
+    <!-- loader -->
+
+    <!--MODALS-->
+    <!-- Start Login modal -->
+    <div
+      class="modal fade"
+      id="login-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label"
+                  >Username:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username-input"
+                  value="MohamadGhnemat96"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label"
+                  >Password:</label
+                >
+                <input
+                  id="password-input"
+                  type="password"
+                  class="form-control"
+                  value="123456"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="loginBtnClicked()"
+              id="liveAlertBtn"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End login modal -->
+    <!--Start register modal -->
+    <div
+      class="modal fade"
+      id="register-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Register A New User
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="register-image-input" class="col-form-label"
+                  >Profile Image:</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="register-image-input"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Name:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="register-name-input"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label"
+                  >Username:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="register-username-input"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label"
+                  >Password:</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="register-password-input"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="registerBtnClicked()"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End register modal -->
+    <!--Start Create Post modal -->
+    <div
+      class="modal fade"
+      id="create-post-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="post-modal-title">
+              Create A New Post
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="post-title-input"
+                  value=""
+                />
+                <input type="hidden" id="post-id-input" value="" />
+              </div>
+              <div class="mb-3">
+                <textarea
+                  name=""
+                  id="post-body-input"
+                  style="
+                    width: 100%;
+                    height: 100px;
+                    border-color: gray;
+                    border-radius: 10px;
+                    resize: none;
+                  "
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label">Image</label>
+                <input type="file" class="form-control" id="post-image-input" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="post-modal-submit-btn"
+              type="button"
+              class="btn btn-primary"
+              onclick="CreateNewPostClicked()"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Create Post modal -->
+
+    <!--Start delete modal -->
+    <div
+      class="modal fade"
+      id="delete-post-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="post-modal-title">
+              Are you sure you want to delete the post?
+              <span id="delete-post-title"></span>
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+            <input id="delete-post-id-input" type="hidden" value="" />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="post-modal-submit-btn"
+              type="button"
+              class="btn btn-danger"
+              onclick="confirmPostDelete()"
+            >
+              Yes, Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End delete modal -->
+    <!--=========Start Alerts====== -->
+    <div id="success-alert" class="show fade"></div>
+
+    <!--=========End Alerts======  -->
+    <!--========= Start Add Post Button====== -->
+    <div id="add-btn" class="bg-primary" onclick="addBtnClicked()">+</div>
+
+    <!--=========End Add Post Button======  -->
+    <!--Start Header -->
+    <header>
+      <div class="container">
+        <nav
+          class="navbar col-9 mx-auto rounded shadow d-flex justify-content-between navbar-expand-lg bg-body-tertiary"
+        >
+          <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">SocialNation</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    aria-current="page"
+                    href="home.html"
+                    >Home</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    onclick="profileClicked()"
+                    style="cursor: pointer"
+                    >Profile</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="auth d-flex">
+            <button
+              id="login-btn"
+              type="button"
+              class="btn btn-outline-success"
+              data-bs-toggle="modal"
+              data-bs-target="#login-modal"
+            >
+              Login
+            </button>
+            <button
+              id="register-btn"
+              type="button"
+              class="btn ms-2 me-3 btn-outline-success"
+              data-bs-toggle="modal"
+              data-bs-target="#register-modal"
+            >
+              Register
+            </button>
+            <div id="user-data" style="display: none">
+              <img
+                id="nav-user-image"
+                aria-colspan="user-image"
+                class="rounded-circle"
+                src="/profile-pics/1.png"
+                alt="user-image"
+              />
+              <b id="nav-username" class="m-0">ghnemat mohamad</b>
+            </div>
+            <button
+              onclick="logout()"
+              style="display: none"
+              id="logout-btn"
+              type="button"
+              class="btn ms-2 me-3 btn-outline-danger"
+            >
+              Logout
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!--End Header -->
+
+    <!--Start Main -->
+    <main>
+      <div class="container pb-5">
+        <div id="posts" class="col-9 mx-auto d-flex flex-column gap-4">
+          <div class="card shadow">
+            <div
+              class="card-header d-flex align-items-center justify-content-between"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <img
+                  src="./profile-pics/1.png"
+                  alt="profile-image"
+                  class="rounded-circle border border-2"
+                />
+                <b class="m-0">@Yarhmm</b>
+              </div>
+              <div class="ubdate">
+                <button type="button" class="btn btn-secondary">edit</button>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <img
+                class="w-100 rounded"
+                src="./placeholders/1.jpg"
+                alt="card-image"
+              />
+              <h6 class="mt-1">2 min ago</h6>
+              <h5>hello world</h5>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Numquam, laboriosam nulla quasi veritatis rem aperiam.
+              </p>
+              <hr />
+              <span>
+                <i class="bi bi-pen"></i>
+                (3) Comments
+                <span id="post-tags" class="mx-1">
+                  <button
+                    class="btn btn-sm rounded-5"
+                    style="background-color: gray; color: white; border: none"
+                  >
+                    policy
+                  </button>
+                  <button
+                    class="btn btn-sm rounded-5"
+                    style="background-color: gray; color: white; border: none"
+                  >
+                    policy
+                  </button>
+                  <button
+                    class="btn btn-sm rounded-5"
+                    style="background-color: gray; color: white; border: none"
+                  >
+                    policy
+                  </button>
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div class="card shadow">
+            <div class="card-header d-flex align-items-center gap-2">
+              <img
+                src="./profile-pics/1.png"
+                alt="profile-image"
+                class="rounded-circle border border-2"
+              />
+              <b class="m-0">@Yarhmm</b>
+            </div>
+
+            <div class="card-body">
+              <img
+                class="w-100 rounded"
+                src="./placeholders/1.jpg"
+                alt="card-image"
+              />
+              <h6 class="mt-1">2 min ago</h6>
+              <h5>hello world</h5>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Numquam, laboriosam nulla quasi veritatis rem aperiam.
+              </p>
+              <hr />
+              <span>
+                <i class="bi bi-pen"></i>
+                (3) Comments
+              </span>
+            </div>
+          </div>
+          <div class="card shadow">
+            <div class="card-header d-flex align-items-center gap-2">
+              <img
+                src="./profile-pics/1.png"
+                alt="profile-image"
+                class="rounded-circle border border-2"
+              />
+              <b class="m-0">@Yarhmm</b>
+            </div>
+            <div class="card-body">
+              <img
+                class="w-100 rounded"
+                src="./placeholders/1.jpg"
+                alt="card-image"
+              />
+              <h6 class="mt-1">2 min ago</h6>
+              <h5>hello world</h5>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Numquam, laboriosam nulla quasi veritatis rem aperiam.
+              </p>
+              <hr />
+              <span>
+                <i class="bi bi-pen"></i>
+                (3) Comments
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!--End Main -->
+    <!--Start Footer -->
+    <footer></footer>
+    <!--End Footer -->
+  </body>
+  <script src="mainLogic.js"></script>
+  <script src="homeScripts.js"></script>
+</html>
