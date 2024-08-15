@@ -147,7 +147,11 @@ function setupUI() {
 
     const user = getCurrentUser();
     document.getElementById("nav-username").innerHTML = user.username;
-    document.getElementById("nav-user-image").src = user.profile_image;
+
+    if (typeof user.profile_image == "string")
+      document.getElementById("nav-user-image").src = user.profile_image;
+
+    //console.log(typeof user.profile_image == "string");
   }
 }
 

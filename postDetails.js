@@ -23,7 +23,11 @@ function getPost() {
                     <div class="d-flex gap-3 align-items-center">
                       <img
                         class="rounded-circle"
-                        src=" ${comment.author.profile_image}"
+                        src=" ${
+                          typeof comment.author.profile_image == "string"
+                            ? comment.author.profile_image
+                            : "./profile-pics/1.png"
+                        }"
                         alt="profile-img"
                         style="width: 40px; height: 40px"
                       />
@@ -39,7 +43,11 @@ function getPost() {
      <div class="card ">
             <div class="card-header d-flex align-items-center gap-2">
               <img
-                src="${author.profile_image}"
+                src="${
+                  typeof author.profile_image == "string"
+                    ? author.profile_image
+                    : "./profile-pics/1.png"
+                }"
                 alt="profile-image"
                 class="rounded-circle border border-2"
               />
@@ -49,7 +57,11 @@ function getPost() {
             <div class="card-body">
               <img
                 class="w-100 rounded"
-                src="${post.image}"
+                src="${
+                  typeof post.image == "string"
+                    ? post.image
+                    : "./placeholders/3.jpg"
+                }"
                 alt="card-image"
               />
               <h6 class="mt-1">${post.created_at}</h6>

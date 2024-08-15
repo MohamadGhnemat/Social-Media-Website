@@ -16,7 +16,9 @@ function getUser() {
     document.getElementById("main-info-username").innerHTML = user.username;
     document.getElementById("posts-count").innerHTML = user.posts_count;
     document.getElementById("comments-count").innerHTML = user.comments_count;
-    document.getElementById("main-info-image").src = user.profile_image;
+    if (typeof user.profile_image == "string")
+      document.getElementById("main-info-image").src = user.profile_image;
+
     document.getElementById("name-posts").innerHTML = `${user.username}'s`;
   });
 }
@@ -57,7 +59,11 @@ function getPosts() {
               >
                 <div class="d-flex align-items-center gap-2">
                   <img
-                    src="${author.profile_image}"
+                    src="${
+                      typeof author.profile_image == "string"
+                        ? author.profile_image
+                        : "./profile-pics/1.png"
+                    }"
                     alt="profile-image"
                     class="rounded-circle border border-2"
                   />
@@ -73,10 +79,16 @@ function getPosts() {
   
             
     
-                <div class="card-body"  onclick="postClicked(${post.id})" style="cursor:pointer;">
+                <div class="card-body"  onclick="postClicked(${
+                  post.id
+                })" style="cursor:pointer;">
                   <img
                     class="w-100 rounded"
-                    src="${post.image}"
+                    src="${
+                      typeof post.image == "string"
+                        ? post.image
+                        : "./placeholders/2.jpg"
+                    }"
                     alt="card-image"
                   />
                   <h6 class="mt-1">${post.created_at}</h6>

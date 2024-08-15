@@ -61,9 +61,15 @@ function getPosts(reload = true, page = 1) {
             <div
               class="card-header d-flex align-items-center justify-content-between"
             >
-              <div class="d-flex align-items-center gap-2" style="cursor:pointer;"  onclick="userClicked(${author.id})">
+              <div class="d-flex align-items-center gap-2" style="cursor:pointer;"  onclick="userClicked(${
+                author.id
+              })">
                 <img
-                  src="${author.profile_image}"
+                  src="${
+                    typeof author.profile_image == "string"
+                      ? author.profile_image
+                      : "./profile-pics/1.png"
+                  }"
                   alt="profile-image"
                   class="rounded-circle border border-2"
                 />
@@ -79,10 +85,16 @@ function getPosts(reload = true, page = 1) {
 
           
   
-              <div class="card-body"  onclick="postClicked(${post.id})" style="cursor:pointer;">
+              <div class="card-body"  onclick="postClicked(${
+                post.id
+              })" style="cursor:pointer;">
                 <img
                   class="w-100 rounded"
-                  src="${post.image}"
+                  src="${
+                    typeof post.image == "string"
+                      ? post.image
+                      : "./placeholders/3.jpg"
+                  }"
                   alt="card-image"
                 />
                 <h6 class="mt-1">${post.created_at}</h6>
